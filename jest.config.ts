@@ -22,6 +22,8 @@ const config: Config = {
     'src/**/*.(t|j)s',
     'libs/**/*.(t|j)s',
     'apps/**/*.(t|j)s',
+    // Process entrypoint only calls bootstrap(); it has no business logic.
+    '!src/main.ts',
   ],
   coverageDirectory: './coverage',
   testEnvironment: 'node',

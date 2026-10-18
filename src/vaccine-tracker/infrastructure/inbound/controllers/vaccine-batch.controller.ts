@@ -16,6 +16,7 @@ import {
 import { CreateBatchDto } from './dto/create-batch.dto';
 import { RecordTelemetryDto } from './dto/record-telemetry.dto';
 import { VaccineBatchResponseDto } from './dto/vaccine-batch.response.dto';
+import { toVaccineBatchResponse } from './vaccine-batch.mapper';
 
 /**
  * Input (driving) adapter — exposes the use cases over HTTP/REST.
@@ -36,11 +37,14 @@ export class VaccineBatchController {
     description: 'Batch created successfully',
     type: VaccineBatchResponseDto,
   })
-  public create(@Body() dto: CreateBatchDto) {
-    return this.createBatchUseCase.execute({
+  public async create(
+    @Body() dto: CreateBatchDto,
+  ): Promise<VaccineBatchResponseDto> {
+    const batch = await this.createBatchUseCase.execute({
       type: dto.type,
       initialTemperatures: dto.initialTemperatures,
     });
+    return toVaccineBatchResponse(batch);
   }
 
   @Post(':id/telemetry')
@@ -53,13 +57,14 @@ export class VaccineBatchController {
     type: VaccineBatchResponseDto,
   })
   @ApiNotFoundResponse({ description: 'Batch not found' })
-  public recordTelemetry(
+  public async recordTelemetry(
     @Param('id') id: string,
     @Body() dto: RecordTelemetryDto,
-  ) {
-    return this.recordTelemetryUseCase.execute({
+  ): Promise<VaccineBatchResponseDto> {
+    const batch = await this.recordTelemetryUseCase.execute({
       batchId: id,
       temperature: dto.temperature,
     });
+    return toVaccineBatchResponse(batch);
   }
 }

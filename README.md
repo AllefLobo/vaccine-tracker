@@ -4,7 +4,8 @@ REST API for monitoring the **vaccine cold chain**, built with **NestJS**,
 **TypeScript**, **PostgreSQL** (via Docker/Podman) and **TypeORM**, following
 **Hexagonal Architecture (Ports and Adapters)** with **DDD** principles.
 
-> Demo project.
+> ⚠️ **Example project** — created to **practice NestJS**. Not intended for
+> production use.
 
 ---
 
